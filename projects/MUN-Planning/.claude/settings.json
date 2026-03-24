@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(mkdir:*)",
+      "WebSearch",
+      "WebFetch",
+      "SendMessage"
+    ],
+    "deny": [
+      "Bash(git:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)"
+    ]
+  }
+}
