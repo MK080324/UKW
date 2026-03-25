@@ -29,12 +29,44 @@ round: 1
 phase: B1
 reviewed_file: docs/topic-research.md
 date: YYYY-MM-DD
+blocking_issues:                        # result 为 FAIL 时必填，PASS 时留空列表
+  - id: B1-R1-01                        # ID 规则：B{阶段}-R{轮次}-{序号}
+    description: "信息源缺少官方文件引用"
+    severity: major                     # major / minor
+  - id: B1-R1-02
+    description: "时间线缺少 2024 年后的事件"
+    severity: minor
+resolved_since_last_round:              # 上轮存在、本轮已解决的问题（首轮留空列表）
+  - ref: B1-R0-01                       # 引用上轮的 issue ID
+    description: "多视角呈现已补充"
+carry_forward_from_last_round:          # 上轮存在、本轮仍未解决的问题（首轮留空列表）
+  - ref: B1-R0-03
+    description: "数据时效性标注缺失"
 ---
+```
+
+### ID 规则
+
+- **格式**：`B{阶段}-R{轮次}-{序号}`，例如 `B1-R3-02` 表示 B1 阶段第 3 轮的第 2 个问题
+- **序号**从 01 开始，按检查清单中发现问题的顺序递增
+
+### 字段填写说明
+
+- **blocking_issues**：列出本轮审批发现的所有阻塞问题。`result` 为 FAIL 时必须至少有一项；为 PASS 时留空列表 `[]`
+- **resolved_since_last_round**：列出上一轮存在但本轮已被修复的问题。`ref` 字段引用上轮 `blocking_issues` 中的 `id`。首轮审批留空列表 `[]`
+- **carry_forward_from_last_round**：列出上一轮存在、本轮仍未解决的问题。`ref` 字段引用上轮 `blocking_issues` 中的 `id`。首轮审批留空列表 `[]`
+- **upstream_concern**（可选）：当审批中发现问题根源在前面已通过的子阶段时填写。仅在 `confidence: high` 时 Lead 升级给人类
+
+```yaml
+upstream_concern:                       # 可选，仅在发现前期假设有误时填写
+  target_phase: B1                      # 问题根源所在的阶段
+  suspect_assumption: "调研结论认为 X 支持 Y，但分析结构设计中发现并非如此"
+  confidence: high                      # high → Lead 升级给人类; medium → 记录但继续推进
 ```
 
 报告正文包含：
 - 每个检查项的通过/不通过状态
-- 不通过项的具体问题描述和修改建议
+- 不通过项的具体问题描述和修改建议（与 blocking_issues 中的条目对应）
 - 总结判定
 
 ## 检查清单 1: 主题调研审批（docs/topic-research.md）

@@ -29,9 +29,15 @@ effort: max
 
 ### B2: 分析结构
 - 输入：已通过的 `docs/topic-research.md`
-- 参考模板：`templates/analysis-structure-template.md`
+- 参考模板：**Lead 会在调用指令中指定场景特定模板路径**，格式为 `templates/analysis-structure-[场景].md`
+  - 调研分析 → `templates/analysis-structure-research.md`
+  - 策略规划 → `templates/analysis-structure-strategy.md`
+  - 教育培训 → `templates/analysis-structure-education.md`
+  - 写作编辑 → `templates/analysis-structure-writing.md`
+  - 评判审核 → `templates/analysis-structure-evaluation.md`
+  - 日程规划 → `templates/analysis-structure-scheduling.md`
 - 产出：`docs/analysis-structure.md`
-- 要求：根据 Lead 传递的场景类型，按模板中对应场景的指引构建分析结构
+- 要求：严格按 Lead 指定的场景模板构建分析结构，不要自行选择模板
 
 ### B3: 产出物规划
 - 输入：已通过的 `docs/topic-research.md` 和 `docs/analysis-structure.md`

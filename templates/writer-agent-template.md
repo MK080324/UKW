@@ -1,7 +1,7 @@
 ---
 name: <topic>-writer
 description: 负责 [项目名] 的 [写作范围描述]
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash
 model: opus
 maxTurns: 100  # Design Subagent 可根据项目复杂度调整（范围 80-150）
 effort: max
@@ -22,15 +22,18 @@ effort: max
 - 术语表：.agents/style-guide/glossary.md
 - 引用格式：.agents/style-guide/citation.md
 
-## 调研补充（严格优先级规则）
+## 信息来源规则（严格优先级）
 
 写作中使用事实和数据时，必须按以下优先级：
 1. **首选**：docs/topic-research.md 中已有的事实（这是经过 QA 审批的权威来源）
 2. **次选**：docs/analysis-structure.md 中的分析结论
-3. **补充调研**：仅当以上文档未覆盖时，使用 WebSearch/WebFetch 补充
-   - 补充的事实必须标注为**"补充来源"**（区别于已审批来源）
-   - QA 审核时会重点关注这些新增来源的准确性
-   - 格式：`[补充来源] 事实内容 -- 来源: URL/文献名`
+3. **次选**：docs/supplementary-research.md 中的补充调研结果（如果存在）
+
+**禁止自行使用 WebSearch/WebFetch 补充调研。** 如果发现 topic-research.md 未覆盖你需要的信息，通过 SendMessage 向 Lead 报告：
+
+> "写作 `output/xxx.md` 的 [章节名] 时，需要以下信息但 topic-research.md 未覆盖：[具体信息需求]。请求补充调研。"
+
+Lead 收到后统一决定是否补充调研，补充的信息集中写入 `docs/supplementary-research.md` 供所有 Writer 共享。这保持了信息的单一可信来源。
 
 ## 参考文档
 

@@ -17,6 +17,7 @@ effort: max
 - `docs/analysis-structure.md` -- 已审批的分析结构
 - `docs/deliverables-plan.md` -- 已审批的产出物规划
 - 元仓库的 `templates/` 目录下所有模板文件（project-claude-md-template.md, writer-agent-template.md, qa-agent-template.md）
+- **元仓库 CLAUDE.md 从 `## 阶段 C` 标题到文件末尾** -- 阶段 C 的规范参考，你需要将其中的规则（补充调研流程、检查点恢复逻辑、整合审核、issue 生命周期等）结合模板烘焙到项目 CLAUDE.md 中
 
 ## 产出
 
@@ -95,6 +96,8 @@ QA 在阶段 C 中作为 **Subagent**（不是 teammate），由 Lead 在每个 
 3. **Git 操作由 Lead 独占**
 4. **issue 文件使用 status frontmatter**（open/resolved）并按 phase 分子目录
 5. **评判审核类场景适配**：对于批改考试、合同审查等场景，Writer Agent 的角色定义应调整为"评判员"而非"写手"
+6. **补充调研流程必须写入项目 CLAUDE.md**：Writer 禁止自行 WebSearch，需通过 SendMessage 向 Lead 请求，Lead 调研后写入 `docs/supplementary-research.md` 再回复 Writer（模板中已有完整流程定义，确保保留）
+7. **检查点恢复逻辑必须写入项目 CLAUDE.md**：包含 `C_PHASE_N_COMPLETED`、`C_INTEGRATION_REVIEWED`、`C_COMPLETED` 三种恢复场景的具体处理逻辑（模板中已有完整定义，确保保留）
 
 ## 收到修改意见时
 

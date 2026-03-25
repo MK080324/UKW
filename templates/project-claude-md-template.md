@@ -44,9 +44,46 @@
 - Writer Agent 和 QA 不做 git 操作
 - 每个 Phase 审核通过后，Lead 做一次 commit
 
-### 检查点机制
-每个 Phase 审核通过后，Lead 更新 `.agents/status/phase` 文件。
-session 中断后从上次完成的 Phase 之后继续。
+### 整合审核
+
+所有 Phase 完成后、最终交付前，Lead 调用 QA 对 `output/` 下所有产出物做跨文档整体性审查：
+1. Lead 生成 `.agents/test-cases/integration-test-cases.md`
+2. QA 检查：论述一致性、重复内容、逻辑衔接、术语一致性、交叉引用准确性
+3. 问题写入 `.agents/issues/integration/`，由对应 Writer 修复
+4. 通过后在 phase 文件写入 `C_INTEGRATION_REVIEWED`
+
+### 补充调研流程
+
+Writer Agent 禁止自行使用 WebSearch/WebFetch。当 Writer 发现需要补充信息时：
+
+1. Writer 通过 SendMessage 向 Lead 发送调研请求（说明需要什么信息、用于哪个章节）
+2. Lead 自行使用 WebSearch/WebFetch 完成调研
+3. Lead 将调研结果追加到 `docs/supplementary-research.md`（如不存在则创建），格式：
+   ```markdown
+   ## [请求主题]
+   - 请求来源: [Writer Agent 名称]
+   - 请求时间: YYYY-MM-DD
+   - 调研结果:
+     [调研内容，附来源 URL]
+   ```
+4. Lead 通过 SendMessage 回复 Writer，告知结果已写入，Writer 从文件中读取
+
+### 检查点与恢复机制
+
+每个 Phase 审核通过后，Lead 更新 `.agents/status/phase` 文件。检查点值：
+
+```
+C_PHASE_0_COMPLETED        -> 基础框架已通过
+C_PHASE_1_COMPLETED        -> Phase 1 已通过
+C_PHASE_N_COMPLETED        -> Phase N 已通过
+C_INTEGRATION_REVIEWED     -> 整合审核已通过
+C_COMPLETED                -> 项目完成
+```
+
+**恢复逻辑：** session 中断后，新 session 启动时读取 phase 文件：
+- `C_PHASE_N_COMPLETED`：跳到 Phase N+1 继续。如果 N 是最后一个 Phase，进入整合审核
+- `C_INTEGRATION_REVIEWED`：整合审核已通过，直接进入最终交付
+- `C_COMPLETED`：项目已完成，告知人类
 
 ## 验收标准速查
 | Phase | 自动审核（阻塞） | 延迟人工审阅（不阻塞） |
