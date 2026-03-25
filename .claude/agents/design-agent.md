@@ -23,7 +23,22 @@ effort: max
 所有产出写入项目目录（`projects/<name>/`）：
 
 1. **CLAUDE.md** -- 项目 Agent Team Lead 指令（参考 `templates/project-claude-md-template.md`）
-2. **.claude/settings.json** -- Agent Teams 权限配置
+2. **.claude/settings.json** -- 权限配置（必须包含 `Bash(git:*)` 以支持 Lead 在项目 session 中执行 git 操作）：
+   ```json
+   {
+     "permissions": {
+       "allow": [
+         "Read", "Write", "Edit", "Glob", "Grep",
+         "Bash(ls:*)", "Bash(wc:*)", "Bash(mkdir:*)", "Bash(git:*)",
+         "WebSearch", "WebFetch", "SendMessage"
+       ],
+       "deny": [
+         "Bash(rm -rf:*)"
+       ]
+     }
+   }
+   ```
+   > SendMessage 的参数根据实际 Agent 名称调整（如 `SendMessage(writer-a)`）。
 3. **.claude/agents/*.md** -- Writer Agent 和 QA Agent 配置文件
 4. **.agents/style-guide/** -- 完整版写作规范
    - `tone.md` -- 语气风格定义
